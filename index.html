@@ -1661,14 +1661,25 @@
     if (!chosen) return;
 
     // ── localStorage ──────────────────────────────────────
-    // Retrieve later: JSON.parse(localStorage.getItem('khalamoniBirthdayGift'))
     const data = { choice: chosen, timestamp: new Date().toISOString() };
     localStorage.setItem('khalamoniBirthdayGift', JSON.stringify(data));
 
     // ── Console log ───────────────────────────────────────
     console.log('🎁 Khalamoni\'s Birthday Gift Choice:', chosen);
     console.log('⏰ Chosen at:', new Date().toLocaleString());
-    console.log('📦 Full stored data:', data);
+
+    // ── Save to Google Sheets ─────────────────────────────
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyyWFXSRH_WYNtYyFcRpxaEZLVMpKOqvCyXMjmpzKXgG2itUgF32Q56EkArhSSfR1I0/exec';
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gift: chosen, timestamp: new Date().toLocaleString() })
+    }).then(() => {
+      console.log('✅ Gift choice saved to Google Sheets!');
+    }).catch(err => {
+      console.warn('⚠️ Could not save to Sheets (offline?):', err);
+    });
 
     // ── Populate thank-you screen ─────────────────────────
     document.getElementById('ty-choice').textContent = chosen + ' it is!';
