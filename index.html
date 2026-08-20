@@ -129,101 +129,202 @@
 
     /* ══════════════════════════════════════════════════════════
        ────────────────────────────────────────────────────────
-       SCREEN 1 — OPENING
+       SCREEN 1 — OPENING  (cat chat interface)
        ────────────────────────────────────────────────────────
     ══════════════════════════════════════════════════════════ */
     #s-open {
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 3.5rem 1.5rem 4rem;
-      text-align: center;
+      overflow-y: auto;
+      overflow-x: hidden;
       background: linear-gradient(155deg, #fdf0f6 0%, #fdf8f2 55%, #f6f0fd 100%);
+      min-height: 100vh;
+      align-items: center;
     }
 
-    .open-wrap {
-      max-width: 580px;
+    /* Sticky top bar — like a chat app header */
+    .chat-header {
+      position: sticky;
+      top: 0;
       width: 100%;
+      background: rgba(253,245,250,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212,130,154,.18);
+      z-index: 20;
+      padding: 0.85rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .chat-header-avatars { display: flex; }
+    .chat-header-avatars img {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+      margin-right: -10px;
+      box-shadow: 0 1px 6px rgba(194,96,122,.2);
+    }
+    .chat-header-info { margin-left: 18px; }
+    .chat-header-name { font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text-dark); }
+    .chat-header-sub  { font-size: 0.7rem; color: var(--text-soft); font-family: 'Poppins', sans-serif; }
+
+    /* Chat feed — the scrolling messages area */
+    .chat-feed {
+      width: 100%;
+      max-width: 600px;
+      padding: 1.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-self: center;
+    }
+
+    /* ── Message row (cat speaking) ── */
+    .cmsg {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.65rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .cmsg.show { opacity: 1; transform: translateY(0); }
+
+    /* Avatar column */
+    .cav {
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .cav img {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(212,130,154,.4);
+      box-shadow: 0 2px 10px rgba(194,96,122,.18);
+    }
+    .cav-name {
+      font-size: 0.58rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-faint);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    /* individual opening lines */
-    #o-hello {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.1rem, 9vw, 4.4rem);
-      font-weight: 700;
-      color: var(--deep-rose);
-      line-height: 1.12;
-      margin-bottom: 0.6rem;
-    }
-    #o-from {
+    /* Bubble */
+    .cbubble {
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(228,150,180,.28);
+      border-radius: 18px 18px 18px 4px;
+      padding: 0.72rem 1.05rem;
       font-family: 'Poppins', sans-serif;
-      font-size: clamp(0.88rem, 3vw, 1.15rem);
-      font-weight: 400;
-      color: var(--text-soft);
-      margin-bottom: 0.35rem;
-    }
-    #o-mostly {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: clamp(0.82rem, 2.4vw, 1rem);
-      color: var(--text-faint);
-      margin-bottom: 2.4rem;
-    }
-    .o-divider {
-      width: 48px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--dusty-rose), transparent);
-      border-radius: 2px;
-      margin: 0 auto 2.4rem;
-    }
-    #o-cousin {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1rem, 3.2vw, 1.35rem);
+      font-size: clamp(0.83rem, 2.4vw, 0.93rem);
       color: var(--text-dark);
-      line-height: 1.9;
-      margin-bottom: 1.6rem;
+      line-height: 1.65;
+      max-width: calc(100% - 62px);
+      box-shadow: 0 2px 14px rgba(194,96,122,.1);
     }
-    #o-sister {
+    /* Quoted (Mom's words) — styled differently inside bubbles */
+    .cbubble .quote {
+      display: block;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: clamp(0.95rem, 2.8vw, 1.2rem);
-      color: var(--text-mid);
-      line-height: 2;
-      margin-bottom: 1.6rem;
-    }
-    #o-celebrate {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(0.88rem, 2.5vw, 1.05rem);
-      color: var(--text-mid);
-      line-height: 1.8;
-      margin-bottom: 2.2rem;
-    }
-    #o-strong {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1rem, 3vw, 1.35rem);
-      font-weight: 600;
+      font-size: 1em;
       color: var(--deep-rose);
-      line-height: 2.1;
-      margin-bottom: 3rem;
+      border-left: 3px solid var(--rose);
+      padding-left: 0.6rem;
+      margin: 0.35rem 0;
     }
-    #o-btn {
-      padding: 1rem 3rem;
-      background: linear-gradient(135deg, var(--deep-rose) 0%, var(--gold) 100%);
+
+    /* ── Typing indicator ── */
+    .ctyping {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.65rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .ctyping.show { opacity: 1; }
+    .ctyping-dots {
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(228,150,180,.28);
+      border-radius: 18px 18px 18px 4px;
+      padding: 0.72rem 1rem;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .tydot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--dusty-rose);
+      animation: tybounce 1.3s ease infinite;
+    }
+    .tydot:nth-child(2) { animation-delay: 0.22s; }
+    .tydot:nth-child(3) { animation-delay: 0.44s; }
+    @keyframes tybounce {
+      0%, 75%, 100% { transform: translateY(0); opacity: .4; }
+      38% { transform: translateY(-7px); opacity: 1; }
+    }
+
+    /* ── Khalamoni photo blocks (inline in chat) ── */
+    .cphoto {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.8rem 0.6rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+      align-self: center;
+    }
+    .cphoto.show { opacity: 1; transform: translateY(0); }
+    .cphoto img {
+      width: min(240px, 72vw);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(194,96,122,.25);
+      border: 3px solid rgba(255,255,255,.95);
+    }
+    .cphoto-cap {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+    }
+
+    /* Full-width variant for bonding/landscape photos */
+    .cphoto-full img {
+      width: min(340px, 90vw);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    #chat-continue {
+      display: none;
+      margin: 1rem auto 2rem;
+      padding: 0.9rem 2.8rem;
+      background: linear-gradient(135deg, var(--deep-rose), var(--gold));
       color: #fff;
       border: none;
       border-radius: 50px;
       font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      letter-spacing: 0.04em;
-      box-shadow: 0 6px 26px rgba(194,96,122,.42);
+      box-shadow: 0 5px 22px rgba(194,96,122,.42);
       transition: transform 0.25s, box-shadow 0.25s;
+      letter-spacing: 0.03em;
+      align-self: center;
     }
-    #o-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 34px rgba(194,96,122,.58); }
+    #chat-continue.show { display: block; animation: slide-up 0.7s ease both; }
+    @keyframes slide-up { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    #chat-continue:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 28px rgba(194,96,122,.55); }
 
     /* ══════════════════════════════════════════════════════════
        ────────────────────────────────────────────────────────
@@ -703,60 +804,51 @@
 <div id="ee-toast" role="status" aria-live="polite"></div>
 
 <!-- ════════════════════════════════════════════════════════════
-     SCREEN 1 — OPENING
+     SCREEN 1 — OPENING  (Cotton & Aurora's chat to Khalamoni)
+
+     ────────────────────────────────────────────────────────────
+     CAT PHOTOS:
+       images/cotton1.jpg  — Cotton, happy/relaxed
+       images/cotton2.jpg  — Cotton, excited/playful
+       images/cotton3.jpg  — Cotton, calm/sincere
+       images/aurora1.jpg  — Aurora, happy/relaxed
+       images/aurora2.jpg  — Aurora, excited/wide-eyed
+       images/aurora3.jpg  — Aurora, thoughtful/soft
+
+     KHALAMONI'S PHOTOS (shown inline as compliments):
+       images/k1.jpg  → "makes everything feel warmer"
+       images/k2.jpg  → "became my elder sister"
+       images/k3.jpg  → "Mom smiles differently"
+       images/k4.jpg  → "so strong"
+       images/k5.jpg  → "so glamorous"
+       images/k6.jpg  → "biggest heart"
+       images/k7.jpg  → "beautiful, inside and out"
+     ────────────────────────────────────────────────────────────
 ════════════════════════════════════════════════════════════ -->
-<section id="s-open" class="screen active" aria-label="Opening">
-  <div class="open-wrap">
+<section id="s-open" class="screen active" aria-label="Cotton and Aurora's message">
 
-    <!--
-    ──────────────────────────────────────────────────────────────
-    PERSONAL MESSAGES — Feel free to personalise the text below.
-    The emotional structure is intentional, so edit carefully. ❤️
-    ──────────────────────────────────────────────────────────────
-    -->
-
-    <h1 id="o-hello" class="rev">Hello, Khalamoni ❤️</h1>
-
-    <p id="o-from" class="rev">This little surprise is from Cotton &amp; Aurora 🐾</p>
-
-    <p id="o-mostly" class="rev">
-      But mostly… it&rsquo;s from someone who loves you very, very much.
-    </p>
-
-    <div class="o-divider rev" id="o-div1"></div>
-
-    <p id="o-cousin" class="rev">
-      You may be my cousin by relation,<br />
-      but you have never felt like just my cousin.
-    </p>
-
-    <p id="o-sister" class="rev">
-      Somehow, you became my elder sister,<br />
-      my safe space,<br />
-      and one of the very few people with whom<br />
-      I can simply be… <em>me.</em>
-    </p>
-
-    <p id="o-celebrate" class="rev">
-      So today, we don&rsquo;t want to celebrate just another birthday.<br />
-      We want to celebrate <strong>you.</strong>
-    </p>
-
-    <div class="o-divider rev" id="o-div2"></div>
-
-    <p id="o-strong" class="rev">
-      The strong one.<br />
-      The glamorous one.<br />
-      The beautiful one.<br />
-      The one with the biggest heart.<br />
-      The one who makes everything feel a little warmer.
-    </p>
-
-    <button id="o-btn" class="rev" onclick="goToSlideshow()">
-      Come, let&rsquo;s celebrate you 💕
-    </button>
-
+  <!-- Chat app-style sticky header -->
+  <div class="chat-header">
+    <div class="chat-header-avatars">
+      <img src="images/cotton1.jpg" alt="Cotton"
+           onerror="this.src='https://placehold.co/40x40/fce4ec/c2607a?text=🐾'" />
+      <img src="images/aurora1.jpg" alt="Aurora"
+           onerror="this.src='https://placehold.co/40x40/ead5f5/7b1fa2?text=🐾'" />
+    </div>
+    <div class="chat-header-info">
+      <p class="chat-header-name">Cotton &amp; Aurora 🐾</p>
+      <p class="chat-header-sub">They have a very important message for you…</p>
+    </div>
   </div>
+
+  <!-- Chat messages — populated by JavaScript -->
+  <div class="chat-feed" id="chat-feed"></div>
+
+  <!-- Continue button — appears after all messages -->
+  <button id="chat-continue" onclick="goToSlideshow()">
+    Continue to our memories 💕
+  </button>
+
 </section>
 
 <!-- ════════════════════════════════════════════════════════════
@@ -768,7 +860,7 @@
      1. Put your photos inside the  images/  folder (same
         directory as this index.html file).
      2. Name them:
-            memory1.jpg   memory2.jpg   ...   memory9.jpg
+            memory1.jpg   memory2.jpg   ...   memory5.jpg
         OR  update the src="" attributes in each .slide below.
      3. Recommended: landscape or square photos work best.
      ────────────────────────────────────────────────────────────
@@ -785,12 +877,12 @@
          REPLACE IMAGE  →  images/memory1.jpg
     ═══════════════════════════════════════════════════════════ -->
     <div class="slide active">
-      <img src="images/memory1.jpg" alt="Memory 1"
+      <img src="images/mem1.png" alt="Memory 1"
            onerror="this.src='https://placehold.co/900x675/fce4ec/c2607a?text=📸+Memory+1'" />
       <div class="s-caption">
-        <span class="cap-n">Memory 1 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"A little piece of our story ❤️"</span>
+        <span class="cap-n">Memory 1 of 5</span>
+        <!-- Pahela Boishakh memories -->
+        <span class="cap-t">"Pahela Boishakh memories with you ❤️"</span>
       </div>
     </div>
 
@@ -798,12 +890,12 @@
          REPLACE IMAGE  →  images/memory2.jpg
     ═══════════════════════════════════════════════════════════ -->
     <div class="slide">
-      <img src="images/memory2.jpg" alt="Memory 2"
+      <img src="images/mem2.png" alt="Memory 2"
            onerror="this.src='https://placehold.co/900x675/fff3e0/d4a853?text=📸+Memory+2'" />
       <div class="s-caption">
-        <span class="cap-n">Memory 2 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"Some people become family. You became home."</span>
+        <span class="cap-n">Memory 2 of 5</span>
+        <!-- Sister's Sharee Hangout -->
+        <span class="cap-t">"Sister's Sharee Hangout moments 🌸"</span>
       </div>
     </div>
 
@@ -811,12 +903,12 @@
          REPLACE IMAGE  →  images/memory3.jpg
     ═══════════════════════════════════════════════════════════ -->
     <div class="slide">
-      <img src="images/memory3.jpg" alt="Memory 3"
+      <img src="images/mem3.png" alt="Memory 3"
            onerror="this.src='https://placehold.co/900x675/f8bbd0/880e4f?text=📸+Memory+3'" />
       <div class="s-caption">
-        <span class="cap-n">Memory 3 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"With you, I never have to pretend to be anyone else."</span>
+        <span class="cap-n">Memory 3 of 5</span>
+        <!-- Eid Day Celebration -->
+        <span class="cap-t">"Eid Day celebrations together ✨"</span>
       </div>
     </div>
 
@@ -824,79 +916,27 @@
          REPLACE IMAGE  →  images/memory4.jpg
     ═══════════════════════════════════════════════════════════ -->
     <div class="slide">
-      <img src="images/memory4.jpg" alt="Memory 4"
+      <img src="images/mem4.png" alt="Memory 4"
            onerror="this.src='https://placehold.co/900x675/fce4ec/ad1457?text=📸+Memory+4'" />
       <div class="s-caption">
-        <span class="cap-n">Memory 4 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"The kind of memories I wish I could keep forever."</span>
+        <span class="cap-n">Memory 4 of 5</span>
+        <!-- Mom has a little corner for you in her heart -->
+        <span class="cap-t">"Mom has a little corner for you in her heart 💕"</span>
       </div>
     </div>
 
     <!-- ══ SLIDE 5 ══════════════════════════════════════════════
          REPLACE IMAGE  →  images/memory5.jpg
     ═══════════════════════════════════════════════════════════ -->
-    <div class="slide">
-      <img src="images/memory5.jpg" alt="Memory 5"
-           onerror="this.src='https://placehold.co/900x675/fff9c4/f57f17?text=📸+Memory+5'" />
-      <div class="s-caption">
-        <span class="cap-n">Memory 5 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"Thank you for being one of my safest places."</span>
-      </div>
-    </div>
-
-    <!-- ══ SLIDE 6 ══════════════════════════════════════════════
-         REPLACE IMAGE  →  images/memory6.jpg
-    ═══════════════════════════════════════════════════════════ -->
-    <div class="slide">
-      <img src="images/memory6.jpg" alt="Memory 6"
-           onerror="this.src='https://placehold.co/900x675/f3e5f5/7b1fa2?text=📸+Memory+6'" />
-      <div class="s-caption">
-        <span class="cap-n">Memory 6 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"You make ordinary moments feel special."</span>
-      </div>
-    </div>
-
-    <!-- ══ SLIDE 7 ══════════════════════════════════════════════
-         REPLACE IMAGE  →  images/memory7.jpg
-    ═══════════════════════════════════════════════════════════ -->
-    <div class="slide">
-      <img src="images/memory7.jpg" alt="Memory 7"
-           onerror="this.src='https://placehold.co/900x675/e8f5e9/2e7d32?text=📸+Memory+7'" />
-      <div class="s-caption">
-        <span class="cap-n">Memory 7 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"Strong, beautiful, glamorous — and somehow still the softest heart."</span>
-      </div>
-    </div>
-
-    <!-- ══ SLIDE 8 ══════════════════════════════════════════════
-         REPLACE IMAGE  →  images/memory8.jpg
-    ═══════════════════════════════════════════════════════════ -->
-    <div class="slide">
-      <img src="images/memory8.jpg" alt="Memory 8"
-           onerror="this.src='https://placehold.co/900x675/e3f2fd/1565c0?text=📸+Memory+8'" />
-      <div class="s-caption">
-        <span class="cap-n">Memory 8 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"Life is simply better with you in it."</span>
-      </div>
-    </div>
-
-    <!-- ══ SLIDE 9 ══════════════════════════════════════════════
-         REPLACE IMAGE  →  images/memory9.jpg
-    ═══════════════════════════════════════════════════════════ -->
-    <div class="slide">
-      <img src="images/memory9.jpg" alt="Memory 9"
-           onerror="this.src='https://placehold.co/900x675/fce4ec/c2607a?text=📸+Memory+9'" />
-      <div class="s-caption">
-        <span class="cap-n">Memory 9 of 9</span>
-        <!-- REPLACE THIS CAPTION WITH MY OWN MEMORY -->
-        <span class="cap-t">"And this is only a tiny collection of all the love I have for you. ❤️"</span>
-      </div>
-    </div>
+     <div class="slide">
+       <img src="images/mem5.png" alt="Memory 5"
+            onerror="this.src='https://placehold.co/900x675/fff9c4/f57f17?text=📸+Memory+5'" />
+       <div class="s-caption">
+         <span class="cap-n">Memory 5 of 5</span>
+         <!-- Mom's birthday celebration -->
+         <span class="cap-t">"Mom's birthday celebration with you 🎂❤️"</span>
+       </div>
+     </div>
 
     <!-- Navigation arrows (overlaid on images) -->
     <button class="arr prev" onclick="changeSlide(-1)" aria-label="Previous memory">&#8592;</button>
@@ -908,7 +948,7 @@
 
   <div class="ss-foot">
     <button class="btn-auto on" id="btn-auto" onclick="toggleAuto()">⏸ Auto</button>
-    <span class="ss-count" id="ss-count">1 / 9</span>
+    <span class="ss-count" id="ss-count">1 / 5</span>
   </div>
 
   <button class="btn-cherished" onclick="goToTransition()">
@@ -1066,10 +1106,10 @@
 
     <!-- PART 5 — The dramatic reveal (one line at a time) -->
     <div class="ty-sec rev" id="ty-5">
-      <p class="ty-big">You are not just my cousin.</p>
+      <p class="ty-big">You are not just my sister.</p>
     </div>
     <div class="ty-sec rev" id="ty-6">
-      <p class="ty-big">You are my sister.</p>
+      <p class="ty-big">You are my inspiration, my strength.</p>
     </div>
     <div class="ty-sec rev" id="ty-7">
       <p class="ty-sub">My safe space.</p>
@@ -1104,7 +1144,7 @@
         Some people become family by love.<br />
         And sometimes, you get lucky enough to have both.
       </p>
-      <p class="ty-hb">Happy Birthday, Khalamoni ❤️</p>
+      <p class="ty-hb">Happy Birthday, my dearest Munna Apu ❤️</p>
       <p class="ty-wl">— with all my love</p>
     </div>
 
@@ -1187,28 +1227,246 @@
   }
 
   /* ─────────────────────────────────────────────────────────
-     OPENING SCREEN — staggered sequential reveal
+     OPENING SCREEN — Cotton & Aurora's chat
+     ─────────────────────────────────────────────────────────
+     Each item is either:
+       { type:'msg',   who:'Cotton'|'Aurora', photo:1|2|3,
+         text:'...', typingMs:1200 }
+       { type:'photo', src:'k1', caption:'...' }  (optional caption)
+
+     To personalise: edit the text/caption values below.
+     Photo files referenced:
+       cat   → images/cotton1.jpg, cotton2.jpg, cotton3.png
+               images/aurora1.jpg, aurora2.jpg, aurora3.png
+       khal  → images/k1.jpg … k7.jpg
+       bond  → images/childhood.jpg, foreverBestSis.jpg,
+               "funny  sis moments.jpg"
   ───────────────────────────────────────────────────────── */
-  const openSeq = [
-    { id: 'o-hello',    t: 500   },
-    { id: 'o-from',     t: 1900  },
-    { id: 'o-mostly',   t: 3200  },
-    { id: 'o-div1',     t: 4400  },
-    { id: 'o-cousin',   t: 5100  },
-    { id: 'o-sister',   t: 7000  },
-    { id: 'o-celebrate',t: 9100  },
-    { id: 'o-div2',     t: 10500 },
-    { id: 'o-strong',   t: 11200 },
-    { id: 'o-btn',      t: 13800 },
+  const CHAT = [
+    { type:'msg', who:'Cotton', photo:1,
+      text:'Khalamoni! 👋 It\'s us — Cotton & Aurora!',
+      typingMs: 1100 },
+    { type:'msg', who:'Aurora', photo:1,
+      text:'We have a very important message from Mom. 🐾',
+      typingMs: 1000 },
+    { type:'msg', who:'Cotton', photo:2,
+      text:'We\'ve been preparing this ALL day. Don\'t you dare skip anything. 😤',
+      typingMs: 1400 },
+    { type:'msg', who:'Aurora', photo:1,
+      text:'Mom says you are one of the most important people in her life.',
+      typingMs: 1200 },
+    { type:'msg', who:'Cotton', photo:1,
+      text:'She said you make everything feel warmer just by being there. 🌸',
+      typingMs: 1300 },
+    { type:'photo', src:'k1', caption:'— she means this.' },
+    { type:'msg', who:'Aurora', photo:3,
+      text:'She also said:',
+      typingMs: 800 },
+    { type:'msg', who:'Aurora', photo:3,
+      text:'<span class="quote">"She became my elder sister when I needed one most."</span>',
+      typingMs: 1500 },
+    { type:'photo', src:'k2', caption:'— yes, that\'s you, Khalamoni.' },
+    { type:'msg', who:'Cotton', photo:3,
+      text:'<span class="quote">"She is the one person I can be completely myself with. No explanation needed."</span>',
+      typingMs: 1700 },
+    { type:'msg', who:'Aurora', photo:1,
+      text:'We don\'t fully understand "being yourself". We\'re cats. We\'re always ourselves. 😌',
+      typingMs: 1400 },
+    { type:'msg', who:'Cotton', photo:2,
+      text:'BUT — we know Mom smiles differently when she talks about you. 💕',
+      typingMs: 1200 },
+    { type:'photo', src:'k3', caption:'— this kind of smile.' },
+
+    /* ── Childhood photo — 28 years ago ── */
+    { type:'msg', who:'Cotton', photo:2,
+      text:'Wait wait wait. We found something on Mom\'s phone. 🐾',
+      typingMs: 1000 },
+    { type:'msg', who:'Aurora', photo:1,
+      text:'She keeps this one saved in a special folder. Look at this — 28 years ago. 🥺',
+      typingMs: 1400 },
+    { type:'photo', src:'childhood', caption:'28 years ago. Look how far you\'ve come together. 🥹', full:true },
+
+    { type:'msg', who:'Aurora', photo:2,
+      text:'She says you\'re strong. Like, REALLY strong.',
+      typingMs: 900 },
+    { type:'photo', src:'k4' },
+    { type:'msg', who:'Cotton', photo:2,
+      text:'And glamorous. Extremely glamorous. Aurora agrees, and she is very picky about these things.',
+      typingMs: 1300 },
+    { type:'photo', src:'k5' },
+    { type:'msg', who:'Aurora', photo:3,
+      text:'Mom said you have the biggest heart of anyone she knows. ❤️',
+      typingMs: 1100 },
+    { type:'photo', src:'k6' },
+    { type:'msg', who:'Cotton', photo:1,
+      text:'Which is impressive. Our hearts are tiny. But we also have very big hearts for you. 🐾',
+      typingMs: 1400 },
+    { type:'msg', who:'Aurora', photo:3,
+      text:'Mom also said:',
+      typingMs: 700 },
+    { type:'msg', who:'Aurora', photo:3,
+      text:'<span class="quote">"She is beautiful. Inside and out. Every single day."</span>',
+      typingMs: 1400 },
+    { type:'photo', src:'k7' },
+    { type:'msg', who:'Cotton', photo:1,
+      text:'We checked. Definitely true. We have excellent taste.',
+      typingMs: 1000 },
+
+    /* ── Most recent photo together ── */
+    { type:'msg', who:'Aurora', photo:2,
+      text:'Oh — and this one. Mom said this is her favourite photo of you two right now. 🥰',
+      typingMs: 1300 },
+    { type:'photo', src:'foreverBestSis', caption:'Forever best sisters. ❤️', full:true },
+
+    { type:'msg', who:'Aurora', photo:2,
+      text:'So from Mom, and from us — Happy Birthday, Khalamoni! 🎂🎉',
+      typingMs: 1200 },
+    { type:'msg', who:'Cotton', photo:3,
+      text:'You deserve the entire world. And also probably some cake. 🎂',
+      typingMs: 1100 },
+
+    /* ── Funny moments ── */
+    { type:'msg', who:'Cotton', photo:2,
+      text:'Actually — we can\'t end without showing you these. 😂',
+      typingMs: 900 },
+    { type:'msg', who:'Aurora', photo:1,
+      text:'Mom kept this saved too. She said it\'s the one that shows who you two REALLY are. 😂❤️',
+      typingMs: 1400 },
+    { type:'photo', src:'funny  sis moments', caption:'The realest kind of love — the kind you can laugh in. 😂❤️', full:true },
+
+    { type:'msg', who:'Aurora', photo:1,
+      text:'Mom talks about you so much we feel like we already know you. We love you. ❤️',
+      typingMs: 1500 },
   ];
 
+  /* Cat photo paths — cotton3 and aurora3 are .png */
+  const CAT_IMG = {
+    Cotton: { 1:'images/cotton1.jpg', 2:'images/cotton2.jpg', 3:'images/cotton3.png' },
+    Aurora: { 1:'images/aurora1.jpg', 2:'images/aurora2.jpg', 3:'images/aurora3.png' },
+  };
+  /* Cat placeholder colours (fallback if photo missing) */
+  const CAT_CLR = { Cotton:'fce4ec/c2607a', Aurora:'ead5f5/7b1fa2' };
+
+  /* ── Chat rendering ─────────────────────────────────────── */
   function runOpening() {
-    openSeq.forEach(({ id, t }) =>
+    playChat(0);
+  }
+
+  function playChat(idx) {
+    if (idx >= CHAT.length) {
+      // All messages done — show continue button
       setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('on');
-      }, t)
-    );
+        document.getElementById('chat-continue').classList.add('show');
+        document.getElementById('chat-feed').scrollIntoView({ behavior:'smooth', block:'end' });
+      }, 500);
+      return;
+    }
+
+    const item = CHAT[idx];
+    const feed = document.getElementById('chat-feed');
+
+    if (item.type === 'msg') {
+      // 1. Show typing indicator
+      const typing = makeCatTyping(item.who);
+      feed.appendChild(typing);
+      scrollFeed();
+      void typing.offsetWidth;
+      typing.classList.add('show');
+
+      // 2. After typing delay → remove indicator, show bubble
+      setTimeout(() => {
+        typing.classList.remove('show');
+        setTimeout(() => {
+          typing.remove();
+          const row = makeCatMsg(item.who, item.photo, item.text);
+          feed.appendChild(row);
+          scrollFeed();
+          void row.offsetWidth;
+          row.classList.add('show');
+          setTimeout(() => playChat(idx + 1), 400);
+        }, 300);
+      }, item.typingMs);
+
+    } else { // photo
+      setTimeout(() => {
+        const block = makePhotoBlock(item.src, item.caption, item.full);
+        feed.appendChild(block);
+        scrollFeed();
+        void block.offsetWidth;
+        block.classList.add('show');
+        setTimeout(() => playChat(idx + 1), 500);
+      }, 600);
+    }
+  }
+
+  function makeCatTyping(who) {
+    const wrap = document.createElement('div');
+    wrap.className = 'ctyping';
+    const av = makeCatAv(who, 1);
+    const dots = document.createElement('div');
+    dots.className = 'ctyping-dots';
+    dots.innerHTML = '<span class="tydot"></span><span class="tydot"></span><span class="tydot"></span>';
+    wrap.appendChild(av);
+    wrap.appendChild(dots);
+    return wrap;
+  }
+
+  function makeCatMsg(who, photoNum, text) {
+    const row = document.createElement('div');
+    row.className = 'cmsg';
+    row.appendChild(makeCatAv(who, photoNum));
+    const bubble = document.createElement('div');
+    bubble.className = 'cbubble';
+    bubble.innerHTML = text;
+    row.appendChild(bubble);
+    return row;
+  }
+
+  function makeCatAv(who, photoNum) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cav';
+    const img = document.createElement('img');
+    img.src = CAT_IMG[who][photoNum];
+    img.alt = who;
+    img.onerror = function() {
+      this.src = `https://placehold.co/42x42/${CAT_CLR[who]}?text=🐾`;
+    };
+    const name = document.createElement('span');
+    name.className = 'cav-name';
+    name.textContent = who;
+    wrap.appendChild(img);
+    wrap.appendChild(name);
+    return wrap;
+  }
+
+  function makePhotoBlock(src, caption, full) {
+    const wrap = document.createElement('div');
+    wrap.className = full ? 'cphoto cphoto-full' : 'cphoto';
+    const img = document.createElement('img');
+    // src may contain spaces (e.g. "funny  sis moments") — use directly, browser handles it
+    img.src = `images/${src}.jpg`;
+    img.alt = caption || src;
+    img.onerror = function() {
+      this.src = `https://placehold.co/${full ? '340x220' : '200x267'}/fce4ec/c2607a?text=📸`;
+    };
+    wrap.appendChild(img);
+    if (caption) {
+      const cap = document.createElement('p');
+      cap.className = 'cphoto-cap';
+      cap.textContent = caption;
+      wrap.appendChild(cap);
+    }
+    return wrap;
+  }
+
+  function scrollFeed() {
+    const feed = document.getElementById('chat-feed');
+    if (feed) {
+      setTimeout(() => {
+        const open = document.getElementById('s-open');
+        if (open) open.scrollTop = open.scrollHeight;
+      }, 80);
+    }
   }
 
   /* ─────────────────────────────────────────────────────────
