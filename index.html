@@ -1673,8 +1673,7 @@
     fetch(SHEET_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gift: chosen, timestamp: new Date().toLocaleString() })
+      body: new URLSearchParams({ gift: chosen, timestamp: new Date().toLocaleString() })
     }).then(() => {
       console.log('✅ Gift choice saved to Google Sheets!');
     }).catch(err => {
